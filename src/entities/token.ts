@@ -5,11 +5,17 @@ import Account from './account';
 
 @Entity()
 export default class RefreshToken extends BaseEntity {
-    constructor(id: string, account: Account, value: string) {
+    constructor(
+        id: string,
+        account: Account,
+        value: string,
+        ip?: string | null
+    ) {
         super();
         this.id = id;
         this.account = account;
         this.value = value;
+        this.ip = ip;
     }
 
     @IsString()
