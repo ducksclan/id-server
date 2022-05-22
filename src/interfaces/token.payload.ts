@@ -1,4 +1,4 @@
-import { IsString, IsBoolean, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt } from 'class-validator';
 import { HttpStatus, ApiError } from '@ducksclan/wrapper-express';
 import { Validation } from '@ducksclan/utils';
 
@@ -7,13 +7,13 @@ export default class TokenPayload {
     @IsNotEmpty()
     user_id: string;
 
-    @IsOptional()
-    @IsBoolean()
-    admin?: boolean;
+    @IsInt()
+    @IsNotEmpty()
+    access_level?: number;
 
     constructor(object: TokenPayload) {
         this.user_id = object?.user_id;
-        this.admin = object?.admin;
+        this.access_level = object?.access_level;
     }
 
     static async validate(payload: any): Promise<TokenPayload> {
