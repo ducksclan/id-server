@@ -1,22 +1,22 @@
 import { Entity, Column, PrimaryColumn, JoinColumn, OneToOne } from 'typeorm';
 import { BaseEntity } from '@ducksclan/database';
 import { Generator } from '@ducksclan/utils';
-import { IsString } from 'class-validator';
 import Account from './account';
 
 @Entity()
 export default class VerificationCode extends BaseEntity {
-    constructor(account: Account) {
-        super();
-        this.id = account.id;
-        this.account = account;
+    static init(account: Account) {
+        let entity = new VerificationCode();
+
+        entity.id = account.id;
+        entity.account = account;
+
+        return entity;
     }
 
-    @IsString()
     @PrimaryColumn('varchar')
-    id: string;
+    id!: string;
 
-    @IsString()
     @Column('varchar')
     value: string = Generator.code(6);
 
@@ -26,5 +26,5 @@ export default class VerificationCode extends BaseEntity {
         onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'account_id' })
-    account: Account;
+    account!: Account;
 }

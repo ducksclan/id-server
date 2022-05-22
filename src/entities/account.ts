@@ -1,45 +1,31 @@
-import RefreshToken from './token';
+import RefreshToken from './refresh.token';
 import AuthCode from './auth.code';
 import VerificationCode from './verification.code';
 import { UuidEntity } from '@ducksclan/database';
 import { Generator } from '@ducksclan/utils';
 import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
-import {
-    IsAlphanumeric,
-    IsDate,
-    IsEmail,
-    IsInt,
-    IsOptional,
-    IsString,
-    MaxLength,
-    MinLength,
-} from 'class-validator';
 
 @Entity()
 export default class Account extends UuidEntity {
-    constructor(email: string) {
-        super();
-        this.email = email;
+    static init(email: string, username?: string, access_level?: number) {
+        let entity = new Account();
+
+        entity.email = email;
+        entity.username = username || 'user_' + Generator.sequence(10);
+        entity.access_level = access_level || 0;
+
+        return entity;
     }
 
-    @IsString()
-    @IsEmail()
     @Column('varchar', { unique: true })
-    email: string;
+    email!: string;
 
-    @IsString()
-    @IsAlphanumeric()
-    @MinLength(5)
-    @MaxLength(20)
     @Column('varchar', { unique: true })
-    username: string = 'user_' + Generator.sequence(10);
+    username!: string;
 
-    @IsInt()
     @Column('integer')
-    access_level: number = 0;
+    access_level!: number;
 
-    @IsOptional()
-    @IsDate()
     @Column('datetime', { nullable: true })
     verified_at?: Date | null = null;
 

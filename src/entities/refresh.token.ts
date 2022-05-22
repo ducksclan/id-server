@@ -1,33 +1,31 @@
 import { Entity, Column, PrimaryColumn, JoinColumn, ManyToOne } from 'typeorm';
-import { IsOptional, IsString } from 'class-validator';
 import { BaseEntity } from '@ducksclan/database';
 import Account from './account';
 
 @Entity()
 export default class RefreshToken extends BaseEntity {
-    constructor(
-        id: string,
+    static init(
+        fingerprint: string,
         account: Account,
-        value: string,
+        token: string,
         ip?: string | null
     ) {
-        super();
-        this.id = id;
-        this.account = account;
-        this.value = value;
-        this.ip = ip;
+        let entity = new RefreshToken();
+
+        entity.id = fingerprint;
+        entity.account = account;
+        entity.value = token;
+        entity.ip = ip;
+
+        return entity;
     }
 
-    @IsString()
     @PrimaryColumn('varchar')
     id!: string;
 
-    @IsString()
     @Column('varchar', { unique: true })
     value!: string;
 
-    @IsOptional()
-    @IsString()
     @Column('varchar', { nullable: true })
     ip?: string | null = null;
 
