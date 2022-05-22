@@ -6,9 +6,9 @@ import Account from './account';
 
 @Entity()
 export default class VerificationCode extends BaseEntity {
-    constructor(id: string, account: Account) {
+    constructor(account: Account) {
         super();
-        this.id = id;
+        this.id = account.id;
         this.account = account;
     }
 
