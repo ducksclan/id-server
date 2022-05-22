@@ -6,11 +6,20 @@
     "types": "./dist/index.d.ts",
     "scripts": {
         "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts",
+        "sync": "ts-node ./synchronize.ts",
         "start": "node ./dist/index.js",
         "build": "webpack",
         "test": "mocha"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@ducksclan/database": "^0.0.1",
+        "@ducksclan/utils": "^0.0.6",
+        "@ducksclan/wrapper-express": "0.0.5",
+        "class-validator": "^0.13.2",
+        "dotenv": "^16.0.1",
+        "sqlite3": "^5.0.8",
+        "typeorm": "^0.3.6"
+    },
     "devDependencies": {
         "@types/node": "^17.0.24",
         "ts-loader": "^9.2.8",
