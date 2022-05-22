@@ -15,17 +15,15 @@ export default class TokenPayload {
         this.user_id = object?.user_id;
         this.admin = object?.admin;
     }
-}
 
-export async function checkPayload(
-    payload: TokenPayload
-): Promise<TokenPayload> {
-    let object = new TokenPayload(payload);
-    let errors = await Validation.validate(object);
+    static async validate(payload: any): Promise<TokenPayload> {
+        let object = new TokenPayload(payload);
+        let errors = await Validation.validate(object);
 
-    if (errors.length > 0) {
-        throw new ApiError('invalid token', HttpStatus.Unauthorized);
+        if (errors.length > 0) {
+            throw new ApiError('invalid token', HttpStatus.Unauthorized);
+        }
+
+        return object;
     }
-
-    return object;
 }
