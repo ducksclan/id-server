@@ -1,13 +1,17 @@
-import { initialization, JsonWebToken } from '@ducksclan/wrapper-express';
+import { initialization, taggingMiddleware } from '@ducksclan/wrapper-express';
 import { Database } from '@ducksclan/database';
-import TokenPayload from './interfaces/token.payload';
+import errorHandler from './middlewares/error.handler';
+// import AccountRouter from './routs/account.router';
 import Config from './config';
 
-const config = new Config();
-
-export const app = initialization(config.cookieSecret);
-export const jwt = new JsonWebToken<TokenPayload>();
+export const config = new Config();
 export const db = new Database(config.databaseOptions);
+
+const app = initialization(config.cookieSecret);
+
+app.use(taggingMiddleware());
+// app.use('/account', AccountRouter);
+app.use(errorHandler());
 
 main().catch(console.log);
 
