@@ -1,8 +1,13 @@
-import { ExpiresInOptions, TokensPair } from '@ducksclan/wrapper-express';
+import {
+    ExpiresInOptions,
+    JsonWebToken,
+    TokensPair,
+} from '@ducksclan/wrapper-express';
 import { Account, RefreshToken } from '../entities';
-import { jwt } from '..';
 import AbstractRepository from '../repositories/abstract.repository';
 import TokenPayload from '../interfaces/token.payload';
+
+const jwt = new JsonWebToken<TokenPayload>();
 
 const expiresIn: ExpiresInOptions = {
     access: '10m',
