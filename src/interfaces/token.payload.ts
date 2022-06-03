@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsInt } from 'class-validator';
-import { HttpStatus, ApiError } from '@ducksclan/wrapper-express';
+import { ClientError } from '@ducksclan/wrapper-express';
 import { Validation } from '@ducksclan/utils';
 
 export default class TokenPayload {
@@ -21,7 +21,7 @@ export default class TokenPayload {
         let errors = await Validation.validate(object);
 
         if (errors.length > 0) {
-            throw new ApiError('invalid token', HttpStatus.Unauthorized);
+            throw ClientError.Unauthorized('invalid token');
         }
 
         return object;
