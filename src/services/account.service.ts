@@ -1,11 +1,35 @@
-import { Account, AuthCode } from '../entities';
+import { Account, AuthCode, RefreshToken } from '../entities';
+import { AccountGetBody } from '../interfaces/account.bodies';
 import { ClientError } from '@ducksclan/wrapper-express';
 import validateEmail from '../validation/validate.email';
 import validateCode from '../validation/validate.code';
 import AccountRepository from '../repositories/account.repository';
 import Delivery from './delivery';
 
-export default class AccountLogin extends AccountRepository {
+export default class AccountService extends AccountRepository {
+    async get(user_id: string): Promise<AccountGetBody> {
+        let account = await this.findOne(user_id);
+
+        if (account === null) {
+            throw ClientError.NotFound('account not found');
+        }
+
+        return {
+            user_id: account.id,
+            email: account.email,
+            created_at: account.created_at,
+            verified_at: account.verified_at || null,
+            user_status:
+                account.access_level === 0
+                    ? 'Not Verified'
+                    : account.access_level === 1
+                    ? 'Normal'
+                    : account.access_level === 2
+                    ? 'Admin'
+                    : 'Super Admin',
+        };
+    }
+
     async login(email: string, fingerprint: string): Promise<Account> {
         // validating
         let validEmail = validateEmail(email);
@@ -46,6 +70,17 @@ export default class AccountLogin extends AccountRepository {
             throw ClientError.BadRequest('wrong code');
         }
 
-        return authCode.account;
+        authCode.account.verified_at = new Date();
+        authCode.account.access_level = 1;
+
+        let account = await this.manager.save(authCode.account);
+
+        return account;
+    }
+
+    async logout(fingerprint: string): Promise<void> {
+        await this.manager.delete(RefreshToken, {
+            id: fingerprint,
+        });
     }
 }
