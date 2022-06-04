@@ -2,6 +2,7 @@ import { initialization, taggingMiddleware } from '@ducksclan/wrapper-express';
 import { Database } from '@ducksclan/database';
 import errorHandler from './middlewares/error.handler';
 import AccountRouter from './routs/account.router';
+import TokenAccessRouter from './routs/token.access.router';
 import Config from './config';
 
 export const config = new Config();
@@ -11,6 +12,7 @@ const app = initialization(config.cookieSecret);
 
 app.use(taggingMiddleware());
 app.use('/account', AccountRouter);
+app.use('/token/access', TokenAccessRouter);
 app.use(errorHandler());
 
 main().catch(console.log);
