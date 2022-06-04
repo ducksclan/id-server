@@ -1,4 +1,7 @@
-export interface AccountCreateBody {
+export interface LoginBody {
     email: string;
-    username?: string;
+}
+
+export interface CodeBody {
+    code: string;
 }
