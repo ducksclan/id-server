@@ -11,7 +11,7 @@ export default class Delivery {
             to,
             subject: 'Authentication for ducksclan.ru',
             text:
-                `Dear ${appeal}!\n\n` +
+                `Dear, ${appeal}!\n\n` +
                 `It looks like you are trying to sign in on ducksclan.ru.\n` +
                 `Your authentication code is ${code}.\n\n` +
                 `Thanks,\nThe Ducksclan Support`,

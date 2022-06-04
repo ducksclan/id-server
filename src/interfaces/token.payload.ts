@@ -21,7 +21,7 @@ export default class TokenPayload {
         let errors = await Validation.validate(object);
 
         if (errors.length > 0) {
-            throw ClientError.Unauthorized('invalid token');
+            throw ClientError.Unauthorized('invalid token payload');
         }
 
         return object;
