@@ -8,12 +8,6 @@ import { day } from '@ducksclan/utils';
 import { Router } from 'express';
 import { db } from '..';
 
-let options = {
-    httpOnly: true,
-    signed: true,
-    maxAge: 30 * day('ms'),
-};
-
 const AccountRouter = Router()
     .get(
         '/',
@@ -79,9 +73,13 @@ const AccountRouter = Router()
                 return pair;
             });
 
-            response.cookie('token', pair.refresh, options);
-            response.status(201).json({
-                status: 201,
+            response.cookie('token', pair.refresh, {
+                httpOnly: true,
+                signed: true,
+                maxAge: 7 * day('ms'),
+            });
+            response.status(200).json({
+                status: 200,
                 payload: pair.access,
             });
         })
@@ -92,7 +90,7 @@ const AccountRouter = Router()
             const service = new AccountService();
             await service.logout(response.locals.fingerprint);
 
-            response.clearCookie('token', options);
+            response.clearCookie('token');
             response.status(200).json({
                 status: 200,
                 message: 'success',
