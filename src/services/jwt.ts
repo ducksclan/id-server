@@ -14,7 +14,9 @@ const expiresIn: ExpiresInOptions = {
     refresh: '7d',
 };
 
-export default class TokenIssue extends AbstractRepository {
+export default jwt;
+
+export class TokenIssue extends AbstractRepository {
     async issue(
         account: Account,
         fingerprint: string,
