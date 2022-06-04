@@ -75,6 +75,8 @@ export default class AccountService extends AccountRepository {
 
         let account = await this.manager.save(authCode.account);
 
+        await this.manager.remove(authCode);
+
         return account;
     }
 
