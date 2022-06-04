@@ -22,12 +22,4 @@ export default class AccountRepository extends AbstractRepository {
             throw ClientError.Conflict('email is already occupied');
         }
     }
-
-    async checkUsernameUniqueness(username: string) {
-        let account = await this.manager.findOneBy(Account, { username });
-
-        if (account) {
-            throw ClientError.Conflict('username is already occupied');
-        }
-    }
 }
