@@ -1,9 +1,8 @@
-import RefreshToken from './refresh.token';
-import AuthCode from './auth.code';
-import VerificationCode from './verification.code';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { UuidEntity } from '@ducksclan/database';
 import { Generator } from '@ducksclan/utils';
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import RefreshToken from './refresh.token';
+import AuthCode from './auth.code';
 
 @Entity()
 export default class Account extends UuidEntity {
@@ -36,7 +35,4 @@ export default class Account extends UuidEntity {
 
     @OneToMany(() => AuthCode, entity => entity.account)
     authCodes?: AuthCode[];
-
-    @OneToOne(() => VerificationCode, entity => entity.account)
-    verificationCode?: VerificationCode;
 }
