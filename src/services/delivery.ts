@@ -17,4 +17,15 @@ export default class Delivery {
                 `Thanks,\nThe Ducksclan Support`,
         });
     }
+
+    async sendErrorAlert(error: string) {
+        const transporter = createTransport(config.mailOptions);
+
+        await transporter.sendMail({
+            from: config.mailFrom,
+            to: config.mailOptions.auth.user,
+            subject: 'Error on id.ducksclan.ru',
+            text: error,
+        });
+    }
 }
