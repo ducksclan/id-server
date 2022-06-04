@@ -13,12 +13,9 @@ export interface AuthoriziedLoacls extends TokenPayload, TaggedLoclas {}
 
 export default function authorization(): Middleware<any, AuthoriziedLoacls> {
     return asyncMiddleware(async (request, response, next) => {
-        let payload = jwt.verifyAccess(getToken(request));
-        let errors = await Validation.validate(payload);
-
-        if (errors.length > 0) {
-            throw ClientError.Unauthorized('invalid token payload');
-        }
+        const payload = await TokenPayload.validate(
+            jwt.verifyAccess(getToken(request))
+        );
 
         response.locals.user_id = payload.user_id;
         response.locals.access_level = payload.access_level;
